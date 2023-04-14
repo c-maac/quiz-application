@@ -12,8 +12,6 @@ body {
 #container {
   width: 660px;
   border: solid 3px grey;
-  border-bottom: solid 5px grey;
-  border-right: solid 5px grey;
   border-radius: 8px;
   padding: 48px;
   padding-top: 18px;

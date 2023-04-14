@@ -1,6 +1,24 @@
 let correctAnswer;
 let correctIndex;
 
+function addEventListeners() {
+  [...document.getElementsByClassName('choice')].forEach((el, i) => {
+    el.addEventListener('click', () => {
+      const correctElement = document.getElementsByClassName('choice')[correctIndex];
+      correctElement.style.backgroundColor = 'green';
+      correctElement.style.color = 'white';
+      correctElement.style.borderColor = 'green';
+
+      if (i !== correctIndex) {
+        const selectedElement = document.getElementsByClassName('choice')[i];
+        selectedElement.style.backgroundColor = 'red';
+        selectedElement.style.color = 'white';
+        selectedElement.style.borderColor = 'red';
+      }
+    });
+  });
+}
+
 async function getQuestions() {
   const response = await fetch('/questions');
   const data = await response.json();
@@ -31,24 +49,10 @@ async function getQuestions() {
   // set question text
   document.getElementById('question').innerHTML = data.results[0].question;
 
-  // eslint-disable-next-line no-use-before-define
   addEventListeners();
-}
-
-function addEventListeners() {
-  [...document.getElementsByClassName('choice')].forEach((el, i) => {
-    el.addEventListener('click', () => {
-      if (i === correctIndex) {
-        alert('true!');
-      } else {
-        alert(`false correct answer is ${correctAnswer}`);
-      }
-
-      getQuestions();
-    });
-  });
 }
 
 window.onload = () => {
   getQuestions();
+  document.getElementById('next').addEventListener('click', () => getQuestions());
 };
