@@ -1,15 +1,18 @@
 let correctIndex;
 let numberOfPlayers;
+let currentPlayer;
 let populateNameFieldsFlag = false;
 let competitionStarted = false;
 let numberOfQuestionsAsked = 0;
 const playerNames = [];
+const scoreBoard = [];
 
 // event listeners for answers
 function addEventListeners() {
   [...document.getElementsByClassName('choice')].forEach((el, i) => {
     el.addEventListener('click', () => {
       const correctElement = document.getElementsByClassName('choice')[correctIndex];
+      let isAnswerCorrect = true;
       correctElement.style.backgroundColor = 'green';
       correctElement.style.color = 'white';
       correctElement.style.borderColor = 'green';
@@ -19,15 +22,25 @@ function addEventListeners() {
         selectedElement.style.backgroundColor = 'red';
         selectedElement.style.color = 'white';
         selectedElement.style.borderColor = 'red';
+
+        isAnswerCorrect = false;
       }
       // make all answers unclickable to prevent re-choose
       document.getElementById('container').style.pointerEvents = 'none';
+
+      updateScoreBoard(isAnswerCorrect);
     });
   });
 }
 
+function updateScoreBoard(isAnswerCorrect) {
+  console.log(`push object to scoreboard: ${currentPlayer} ${isAnswerCorrect}`);
+  scoreBoard.push({ player: currentPlayer, isAnswerCorrect });
+}
+
 function updateCompetitionBoard() {
-  document.getElementById('current-player').innerHTML = playerNames[numberOfQuestionsAsked % numberOfPlayers];
+  currentPlayer = playerNames[numberOfQuestionsAsked % numberOfPlayers];
+  document.getElementById('current-player').innerHTML = currentPlayer;
   numberOfQuestionsAsked += 1;
 }
 
@@ -115,10 +128,16 @@ function startCompetition() {
   getQuestion();
 }
 
+function endCompetition() {
+  console.log('Competition end!');
+  // todo some logic
+}
+
 window.onload = () => {
   getQuestion();
   document.getElementById('button-next').addEventListener('click', () => getQuestion());
   document.getElementById('button-competition').addEventListener('click', () => openModal());
   document.getElementById('button-custom-name').addEventListener('click', () => populateNameFields());
   document.getElementById('button-start').addEventListener('click', () => startCompetition());
+  document.getElementById('button-end').addEventListener('click', () => endCompetition());
 };
