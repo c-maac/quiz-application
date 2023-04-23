@@ -18,15 +18,15 @@
         <div class="modal-content">
             <table id = "modal-table" CELLSPACING=0>
                 <tr>
-                    <td><label for="counter">Time (seconds):</label></td>
-                    <td><input id="counter" type="number"/></td>
+                    <td><label for="counter" title = "Allocate time frame for each question">Time (seconds):</label></td>
+                    <td><input id="counter" type="number" title = "Allocate time frame for each question"/></td>
                 </tr>
                 <tr>
-                    <td><label for="player-count">Number of players:</label></td>
-                    <td><input id="player-count" type="number" max="5" /></td>
+                    <td><label for="player-count" title="Number of players. Maximum is 5"> Number of players:</label></td>
+                    <td><input id="player-count" type="number" max="5" title="Number of players. Maximum is 5"/></td>
                 </tr>
                 <tr>
-                    <td><button id="button-custom-name">Custom names</button></td>
+                    <td><button id="button-custom-name" title="Customize player names">Customize</button></td>
                 </tr>
                 <tr>
                     <td><button id="button-start">Start</button></td>
@@ -38,7 +38,7 @@
         <div id="question"></div>
         <div id="box"></div>
     </div>
-    <button id="button-next">NEXT QUESTION</button>
+    <button id="button-next">Next Question</button>
     <script src="script.js"></script>
 </body>
 </html>

@@ -12,7 +12,7 @@ body {
 
 #container {
   width: 660px;
-  border: solid 3px grey;
+  border: 3px solid grey;
   border-radius: 8px;
   padding: 48px;
   padding-top: 18px;
@@ -62,11 +62,11 @@ body {
 
 .modal-content {
   background-color: white;
-  margin: 15% auto;
+  margin: 10% auto;
   padding: 20px;
   width: 30%;
   border: 5px solid orange;
-
+  border-radius: 8px;
 }
 
 .player-row {
@@ -97,15 +97,14 @@ input {
 
 #button-custom-name,
 #button-start {
-  background-color: white;
-  border: 1px solid gray;
-  border-radius: 8px;
-  color: orange;
+  background-color: orange;
+  border: 1px solid orange;
+  border-radius: 5px;
+  color: white;
   cursor: pointer;
   font-size: 15px;
-  line-height: 29px;
-  padding: 0 10px 0 11px;
-  width: 150px;
+  line-height: 30px;
+  width: 125px;
 }
 
 #competition-box {

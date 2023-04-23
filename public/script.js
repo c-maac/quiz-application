@@ -1,11 +1,15 @@
 let correctIndex;
 let numberOfPlayers;
 let currentPlayer;
-let populateNameFieldsFlag = false;
 let competitionStarted = false;
 let numberOfQuestionsAsked = 0;
 const playerNames = [];
 const scoreBoard = [];
+
+function updateScoreBoard(isAnswerCorrect) {
+  console.log(`push object to scoreboard: ${currentPlayer} ${isAnswerCorrect}`);
+  scoreBoard.push({ player: currentPlayer, isAnswerCorrect });
+}
 
 // event listeners for answers
 function addEventListeners() {
@@ -31,11 +35,6 @@ function addEventListeners() {
       updateScoreBoard(isAnswerCorrect);
     });
   });
-}
-
-function updateScoreBoard(isAnswerCorrect) {
-  console.log(`push object to scoreboard: ${currentPlayer} ${isAnswerCorrect}`);
-  scoreBoard.push({ player: currentPlayer, isAnswerCorrect });
 }
 
 function updateCompetitionBoard() {
@@ -87,13 +86,16 @@ function openModal() {
 }
 
 function populateNameFields() {
-  // do not re-populate player name fields
-  if (populateNameFieldsFlag) return;
-  populateNameFieldsFlag = !populateNameFieldsFlag;
-
+  numberOfPlayers = document.getElementById('player-count').value;
   const table = document.getElementById('modal-table');
   const rowCount = table.rows.length;
-  numberOfPlayers = document.getElementById('player-count').value;
+
+  if (!numberOfPlayers) {
+    alert('First decide number of players');
+    return;
+  }
+  // if name fields are already populated then return
+  if (rowCount > 4) return;
 
   for (let i = numberOfPlayers; i > 0; i -= 1) {
     const row = table.insertRow(rowCount - 1);
@@ -112,11 +114,12 @@ function populateNameFields() {
 }
 
 function startCompetition() {
-  const players = document.getElementsByClassName('player-name');
+  const players = document.getElementsByClassName('player-name') || [];
+  numberOfPlayers = document.getElementById('player-count').value;
   competitionStarted = true;
 
   for (let i = 0; i < numberOfPlayers; i += 1) {
-    const player = players.item(i).value || `Player ${i + 1}`;
+    const player = players.item(i)?.value || `Player ${i + 1}`;
     playerNames.push(player);
   }
 
