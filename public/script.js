@@ -15,20 +15,13 @@ function updateScoreBoard(isAnswerCorrect) {
 function addEventListeners() {
   [...document.getElementsByClassName('choice')].forEach((el, i) => {
     el.addEventListener('click', () => {
-      const correctElement = document.getElementsByClassName('choice')[correctIndex];
-      let isAnswerCorrect = true;
-      correctElement.style.backgroundColor = 'green';
-      correctElement.style.color = 'white';
-      correctElement.style.borderColor = 'green';
+      document.getElementsByClassName('choice')[correctIndex].classList.add('selected', 'correct');
+      const isAnswerCorrect = i !== correctIndex;
 
-      if (i !== correctIndex) {
-        const selectedElement = document.getElementsByClassName('choice')[i];
-        selectedElement.style.backgroundColor = 'red';
-        selectedElement.style.color = 'white';
-        selectedElement.style.borderColor = 'red';
-
-        isAnswerCorrect = false;
+      if (isAnswerCorrect) {
+        document.getElementsByClassName('choice')[i].classList.add('selected', 'incorrect');
       }
+
       // make all answers unclickable to prevent re-choose
       document.getElementById('container').style.pointerEvents = 'none';
 
@@ -132,8 +125,15 @@ function startCompetition() {
 }
 
 function endCompetition() {
-  console.log('Competition end!');
-  // todo some logic
+  let scores = '';
+  for (let i = 0; i < numberOfPlayers; i += 1) {
+    const result = scoreBoard.filter((el) => el.player === playerNames[i])
+      .reduce((acc, val) => ((val.isAnswerCorrect ? 1 : 0) + acc), 0);
+
+    scores += `${playerNames[i]} = ${result}\n`;
+  }
+
+  alert(scores);
 }
 
 window.onload = () => {

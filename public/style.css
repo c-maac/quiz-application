@@ -144,3 +144,15 @@ input {
     opacity: 1
   }
 }
+
+.choice.selected.correct, .choice.correct {
+  background-color: 'green';
+  color: 'white';
+  border-color: 'green';
+}
+
+.choice.selected.incorrect {
+  background-color: 'green';
+  color: 'white';
+  border-color: 'green';
+}
