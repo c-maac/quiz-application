@@ -12,9 +12,10 @@ const UI = {
     document.getElementById('button-start').addEventListener('click', startCompetition);
     document.getElementById('button-end').addEventListener('click', endCompetition);
     document.getElementById('button-close-modal').addEventListener('click', UI.closeCompetitionModal);
+    document.getElementById('button-close-scoreboard').addEventListener('click', UI.closeScoreBoardModal);
   },
 
-  setupQuestion: (question, answers, onSelected,playerName) => {
+  setupQuestion: (question, answers, onSelected, playerName) => {
     // make all answers clickable
     document.body.classList.remove('answer-locked');
 
@@ -49,10 +50,18 @@ const UI = {
   },
 
   closeCompetitionModal: () => {
-    document.getElementById("player-count").disabled = false;
     document.body.classList.remove('setup-competition');
-    document.getElementById('player-count').value = 2;
 
+    //TODO DUPLICATE CODE - Call CleanModalData
+    document.getElementById("player-count").disabled = false;
+    document.getElementById('player-count').value = 2;
+    const d = document.getElementsByClassName('player-row');
+    while (d.length) d[0].parentElement.removeChild(d[0]);
+  },
+
+  cleanModalData: () => {
+    document.getElementById("player-count").disabled = false;
+    document.getElementById('player-count').value = 2;
     const d = document.getElementsByClassName('player-row');
     while (d.length) d[0].parentElement.removeChild(d[0]);
   },
@@ -76,12 +85,12 @@ const UI = {
   },
 
   populateNameFields: () => {
-    
+
     const numberOfPlayers = document.getElementById('player-count').value;
     const table = document.getElementById('modal-table');
     const rowCount = table.rows.length;
 
-    if (!numberOfPlayers || numberOfPlayers < 2 || numberOfPlayers > 5)  {
+    if (!numberOfPlayers || numberOfPlayers < 2 || numberOfPlayers > 5) {
       alert('Player count should be between 2 and 5');
       return;
     }
@@ -104,5 +113,35 @@ const UI = {
       element2.className = 'player-name';
       cell2.appendChild(element2);
     }
+  },
+
+  populateScoreBoard: (_scoreBoard, _numberOfPlayers,_playerNames) => {
+
+    const containerDiv = document.getElementById('scoreboard');
+
+    for (let i = 0; i < _numberOfPlayers; i += 1) {
+      const result = _scoreBoard.filter((el) => el.player === _playerNames[i] && el.isAnswerCorrect).length
+      //scores += `${_playerNames[i]} = ${result}\n`;
+
+      const h2Element = document.createElement('h2');
+      const h1Element = document.createElement('h1');
+      const div = document.createElement('div');
+      div.classList.add('score');
+      h2Element.innerText = result;
+      h1Element.innerText = _playerNames[i];
+
+      div.appendChild(h1Element);
+      div.appendChild(h2Element);
+      containerDiv.appendChild(div);
+    }
+  },
+
+  closeScoreBoardModal: () => {
+
+    const d = document.getElementsByClassName('score');
+    while (d.length) d[0].parentElement.removeChild(d[0]);
+
+    document.body.classList.remove('celebrate');
+
   }
 }

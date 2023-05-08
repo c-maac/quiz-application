@@ -21,7 +21,10 @@ function answerSelected(i) {
 }
 
 async function getQuestion() {
+
+  document.body.classList.add('loading');
   const data = await QuestionApi.getQuestion();
+  document.body.classList.remove('loading');
 
   // generate a random number which will be the index of the correct answer
   _correctIndex = Math.floor(Math.random() * (data.choiceCount));
@@ -76,10 +79,14 @@ function endCompetition() {
     scores += `${_playerNames[i]} = ${result}\n`;
   }
 
-  alert(scores);
+  //alert(scores);
   _competitionStarted = false;
 
+  UiHelper.cleanModalData();
+  UiHelper.populateScoreBoard(_scoreBoard,_numberOfPlayers,_playerNames);
   document.body.classList.remove('competition-active');
+  document.body.classList.add('celebrate');
+  
 }
 
 window.onload = () => {
