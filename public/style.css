@@ -67,6 +67,19 @@ body {
   width: 30%;
   border: 5px solid orange;
   border-radius: 8px;
+  position: relative;
+}
+
+#button-close-modal {
+  border: 3px solid orange;
+  border-radius: 30px;
+  font-size: 20px;
+  background: white;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  color: grey;
+  cursor: pointer;
 }
 
 .player-row {
@@ -145,14 +158,36 @@ input {
   }
 }
 
-.choice.selected.correct, .choice.correct {
-  background-color: 'green';
-  color: 'white';
-  border-color: 'green';
+
+body.answer-locked .choice.selected.correct,
+body.answer-locked .choice.correct {
+  background-color: green;
+  color: white;
+  border-color: green;
 }
 
-.choice.selected.incorrect {
-  background-color: 'green';
-  color: 'white';
-  border-color: 'green';
+body.answer-locked .choice.selected {
+  background-color: red;
+  color: white;
+  border-color: red;
+}
+
+
+/* answer-locked */
+body.answer-locked #box {
+  pointer-events: none;
+}
+
+/* competition setup*/
+body.setup-competition .modal-container {
+  display: block;
+}
+
+/* competition active */
+body.competition-active #button-competition {
+  display: none;
+}
+
+body.competition-active #competition-box {
+  display: flex;
 }

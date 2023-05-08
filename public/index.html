@@ -15,7 +15,12 @@
         <button id="button-end">End Competition</button>
     </div>
     <div class="modal-container">
+
         <div class="modal-content">
+            <button type="button"
+            id="button-close-modal">
+            ×
+        </button>
             <table id = "modal-table" CELLSPACING=0>
                 <tr>
                     <td><label for="counter" title = "Allocate time frame for each question">Time (seconds):</label></td>
@@ -23,7 +28,7 @@
                 </tr>
                 <tr>
                     <td><label for="player-count" title="Number of players. Maximum is 5" > Number of players:</label></td>
-                    <td><input id="player-count" type="number" max="5" title="Number of players. Maximum is 5" value="1"/></td>
+                    <td><input id="player-count" type="number" min="2" max="5" title="Number of players. Maximum is 5" value="2"/></td>
                 </tr>
                 <tr>
                     <td><button id="button-custom-name" title="Customize player names">Customize</button></td>
@@ -39,6 +44,8 @@
         <div id="box"></div>
     </div>
     <button id="button-next">Next Question</button>
+    <script src="scripts/questionApi.js"></script>
+    <script src="scripts/uiHelper.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

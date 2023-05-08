@@ -1,146 +1,88 @@
-let correctIndex;
-let numberOfPlayers;
-let currentPlayer;
-let competitionStarted = false;
-let numberOfQuestionsAsked = 0;
-const playerNames = [];
-const scoreBoard = [];
+const UiHelper = UI;
+const QuestionApi = API;
 
-function updateScoreBoard(isAnswerCorrect) {
-  console.log(`push object to scoreboard: ${currentPlayer} ${isAnswerCorrect}`);
-  scoreBoard.push({ player: currentPlayer, isAnswerCorrect });
-}
+/* eslint-disable no-underscore-dangle */
+let _correctIndex;
+let _numberOfPlayers;
+let _currentPlayer;
+let _competitionStarted;
+let _numberOfQuestionsAsked = 0;
+const _playerNames = [];
+const _scoreBoard = [];
+/* eslint-enable no-underscore-dangle */
 
-// event listeners for answers
-function addEventListeners() {
-  [...document.getElementsByClassName('choice')].forEach((el, i) => {
-    el.addEventListener('click', () => {
-      document.getElementsByClassName('choice')[correctIndex].classList.add('selected', 'correct');
-      const isAnswerCorrect = i !== correctIndex;
+function answerSelected(i) {
+  UiHelper.lockAnswer(_correctIndex)
 
-      if (isAnswerCorrect) {
-        document.getElementsByClassName('choice')[i].classList.add('selected', 'incorrect');
-      }
-
-      // make all answers unclickable to prevent re-choose
-      document.getElementById('container').style.pointerEvents = 'none';
-
-      updateScoreBoard(isAnswerCorrect);
-    });
-  });
-}
-
-function updateCompetitionBoard() {
-  currentPlayer = playerNames[numberOfQuestionsAsked % numberOfPlayers];
-  document.getElementById('current-player').innerHTML = currentPlayer;
-  numberOfQuestionsAsked += 1;
+  if (_competitionStarted) {
+    console.log(`push object to scoreboard: ${_currentPlayer} ${i == _correctIndex}`);
+    _scoreBoard.push({ player: _currentPlayer, isAnswerCorrect: i == _correctIndex });
+  }
 }
 
 async function getQuestion() {
-  const response = await fetch('/questions');
-  const data = await response.json();
-  const choiceCount = data.results[0].incorrect_answers.length + 1;
-  const correctAnswer = data.results[0].correct_answer;
-
-  // make all answers clickable
-  document.getElementById('container').style.pointerEvents = 'auto';
+  const data = await QuestionApi.getQuestion();
 
   // generate a random number which will be the index of the correct answer
-  correctIndex = Math.floor(Math.random() * (choiceCount));
+  _correctIndex = Math.floor(Math.random() * (data.choiceCount));
 
   // create an array that contains all choices
-  const choices = data.results[0].incorrect_answers.slice();
-  choices.splice(correctIndex, 0, correctAnswer);
+  const choices = data.incorrectAnswers.slice();
+  choices.splice(_correctIndex, 0, data.answer);
 
-  const elements = [];
-  // create child element for each choice
-  for (let i = 0; i < choiceCount; i += 1) {
-    const element = document.createElement('div');
-    element.className = 'choice';
-    element.innerHTML = choices[i];
-    elements.push(element);
-  }
+  if (_competitionStarted)
+    _currentPlayer = _playerNames[_numberOfQuestionsAsked % _numberOfPlayers];
 
-  // replace all children from box
-  const choiceContainer = document.getElementById('box');
-  choiceContainer.replaceChildren(...elements);
-
-  // set question text
-  document.getElementById('question').innerHTML = data.results[0].question;
-
-  addEventListeners();
-
-  if (competitionStarted) updateCompetitionBoard();
-}
-
-function openModal() {
-  const modal = document.getElementsByClassName('modal-container').item(0);
-  modal.style.display = 'block';
-}
-
-function populateNameFields() {
-  numberOfPlayers = document.getElementById('player-count').value;
-  const table = document.getElementById('modal-table');
-  const rowCount = table.rows.length;
-
-  if (!numberOfPlayers) {
-    alert('First decide number of players');
-    return;
-  }
-  // if name fields are already populated then return
-  if (rowCount > 4) return;
-
-  for (let i = numberOfPlayers; i > 0; i -= 1) {
-    const row = table.insertRow(rowCount - 1);
-    row.className = 'player-row';
-
-    const cell1 = row.insertCell(0);
-    const element1 = document.createTextNode(`Player ${i}`);
-    cell1.appendChild(element1);
-
-    const cell2 = row.insertCell(1);
-    const element2 = document.createElement('input');
-    element2.setAttribute('type', 'text');
-    element2.className = 'player-name';
-    cell2.appendChild(element2);
-  }
+  UiHelper.setupQuestion(data.question, choices, answerSelected, _currentPlayer);
+  _numberOfQuestionsAsked += 1;
 }
 
 function startCompetition() {
-  const players = document.getElementsByClassName('player-name') || [];
-  numberOfPlayers = document.getElementById('player-count').value;
-  competitionStarted = true;
+  const modalData = UiHelper.startCompetition();
 
-  for (let i = 0; i < numberOfPlayers; i += 1) {
-    const player = players.item(i)?.value || `Player ${i + 1}`;
-    playerNames.push(player);
-  }
-
-  document.getElementsByClassName('modal-container').item(0).style.display = 'none';
-  document.getElementById('button-competition').style.display = 'none';
-  document.getElementById('competition-box').style.display = 'flex';
-
-  // to start display the next question
+  _playerNames.splice(0, _playerNames.length, ...modalData.playerNames)
+  _numberOfPlayers = modalData.playerCount;
+  _numberOfQuestionsAsked = 0;
+  _scoreBoard.splice(0, _scoreBoard.length)
+  _competitionStarted = true;
+  // to start, display the next question
   getQuestion();
 }
 
 function endCompetition() {
   let scores = '';
-  for (let i = 0; i < numberOfPlayers; i += 1) {
-    const result = scoreBoard.filter((el) => el.player === playerNames[i])
-      .reduce((acc, val) => ((val.isAnswerCorrect ? 1 : 0) + acc), 0);
 
-    scores += `${playerNames[i]} = ${result}\n`;
+  // Solution 1
+  // const finalScores = _scoreBoard.reduce((map, {player, isAnswerCorrect}) => {
+  //   map[player] = (map[player] ?? 0) + isAnswerCorrect;
+  //   return map;
+  // }, {})
+
+  // Solution 2
+  // const finalScores = _scoreBoard.reduce(
+  //   (val, { player, isAnswerCorrect: correct }) => ({
+  //     ...val,
+  //     [player]: (val[player] ?? 0) + correct,
+  //   }),
+  //   {});
+
+  // Object.entries(finalScores).forEach(({ player, isAnswerCorrect }) => {
+  //   scores += `${player}: ${isAnswerCorrect}\n`;
+  // })
+
+  // Solution 3
+  for (let i = 0; i < _numberOfPlayers; i += 1) {
+    const result = _scoreBoard.filter((el) => el.player === _playerNames[i] && el.isAnswerCorrect).length
+    scores += `${_playerNames[i]} = ${result}\n`;
   }
 
   alert(scores);
+  _competitionStarted = false;
+
+  document.body.classList.remove('competition-active');
 }
 
 window.onload = () => {
+  UiHelper.setupUi(getQuestion, startCompetition, endCompetition);
   getQuestion();
-  document.getElementById('button-next').addEventListener('click', () => getQuestion());
-  document.getElementById('button-competition').addEventListener('click', () => openModal());
-  document.getElementById('button-custom-name').addEventListener('click', () => populateNameFields());
-  document.getElementById('button-start').addEventListener('click', () => startCompetition());
-  document.getElementById('button-end').addEventListener('click', () => endCompetition());
 };
