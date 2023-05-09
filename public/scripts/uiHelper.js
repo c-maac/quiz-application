@@ -52,7 +52,7 @@ const UI = {
   closeCompetitionModal: () => {
     document.body.classList.remove('setup-competition');
 
-    //TODO DUPLICATE CODE - Call CleanModalData
+    // TODO DUPLICATE CODE - CALL CleanModalData
     document.getElementById("player-count").disabled = false;
     document.getElementById('player-count').value = 2;
     const d = document.getElementsByClassName('player-row');
@@ -121,7 +121,6 @@ const UI = {
 
     for (let i = 0; i < _numberOfPlayers; i += 1) {
       const result = _scoreBoard.filter((el) => el.player === _playerNames[i] && el.isAnswerCorrect).length
-      //scores += `${_playerNames[i]} = ${result}\n`;
 
       const h2Element = document.createElement('h2');
       const h1Element = document.createElement('h1');

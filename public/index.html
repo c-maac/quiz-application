@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz Application</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="scoreboard.css">
 </head>
-
 <body>
     <div class="drop-container">
         <div class="drop"></div>
@@ -27,33 +26,30 @@
     </div>
     <div id="scoreboard">
         <button type="button" id="button-close-scoreboard">×</button>
-        <!-- <div class="score"><h1>Player 1</h1><h2>1</h2></div>
-        <div class="score"><h1>Player 2</h1><h2>0</h2></div> -->
     </div>
-    <button id="button-competition">Make it a competition!</button>
+    <button id="button-competition">Battle Mode</button>
     <div id="competition-box">
         <div id="current-player"></div>
-        <button id="button-end">End Competition</button>
+        <button id="button-end">Finish Battle</button>
     </div>
     <div class="modal-container">
         <div class="modal-content">
             <button type="button" id="button-close-modal">×</button>
             <table id="modal-table" CELLSPACING=0>
                 <tr>
-                    <td><label for="counter" title="Allocate time frame for each question">Time (seconds):</label></td>
-                    <td><input id="counter" type="number" title="Allocate time frame for each question" /></td>
+                    <td><label for="counter">Seconds Per Question</label></td>
+                    <td><input id="counter" type="number"/></td>
                 </tr>
                 <tr>
-                    <td><label for="player-count" title="Number of players. Maximum is 5"> Number of players:</label>
+                    <td><label for="player-count" title="Minimum is 2. Maximum is 5"> Number of Players</label>
                     </td>
-                    <td><input id="player-count" type="number" min="2" max="5" title="Number of players. Maximum is 5"
-                            value="2" /></td>
+                    <td><input id="player-count" type="number" min="2" max="5" value="2"/></td>
                 </tr>
                 <tr>
-                    <td><button id="button-custom-name" title="Customize player names">Customize</button></td>
+                    <td><button id="button-custom-name">Customize Player Names</button></td>
                 </tr>
                 <tr>
-                    <td><button id="button-start">Start</button></td>
+                    <td><button id="button-start">Let the Battle Begin!</button></td>
                 </tr>
             </table>
         </div>
@@ -67,5 +63,4 @@
     <script src="scripts/uiHelper.js"></script>
     <script src="script.js"></script>
 </body>
-
 </html>
