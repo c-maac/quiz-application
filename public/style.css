@@ -193,6 +193,15 @@ body.setup-competition .modal-container {
   cursor: none;
 }
 
+#timer {
+  padding: 10px 50px;
+  color: orange;
+  border: 2px solid grey;
+  font-weight: 600;
+  font-size: 18px;
+  border-radius: 7px;
+}
+
 /* competition active */
 body.competition-active #button-competition {
   display: none;

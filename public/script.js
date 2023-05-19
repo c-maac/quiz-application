@@ -4,9 +4,11 @@ const QuestionApi = API;
 /* eslint-disable no-underscore-dangle */
 let _correctIndex;
 let _numberOfPlayers;
+let _timer;
 let _currentPlayer;
 let _competitionStarted;
 let _numberOfQuestionsAsked = 0;
+let _interval;
 const _playerNames = [];
 const _scoreBoard = [];
 /* eslint-enable no-underscore-dangle */
@@ -33,8 +35,25 @@ async function getQuestion() {
   const choices = data.incorrectAnswers.slice();
   choices.splice(_correctIndex, 0, data.answer);
 
-  if (_competitionStarted)
+  if (_competitionStarted) {
     _currentPlayer = _playerNames[_numberOfQuestionsAsked % _numberOfPlayers];
+
+    const timerElement = document.getElementById('timer');
+    let timer = _timer;
+
+    clearInterval(_interval);
+
+     _interval = setInterval(() => {
+      timerElement.innerHTML = timer;
+      timer--;
+      if (timer < 0) {
+        timerElement.innerHTML = 'TIME OUT';
+        document.body.classList.add('loading');
+        clearInterval(_interval);
+        getQuestion();
+      }
+    }, 1000);
+  }
 
   UiHelper.setupQuestion(data.question, choices, answerSelected, _currentPlayer);
   _numberOfQuestionsAsked += 1;
@@ -45,6 +64,7 @@ function startCompetition() {
 
   _playerNames.splice(0, _playerNames.length, ...modalData.playerNames)
   _numberOfPlayers = modalData.playerCount;
+  _timer = modalData.timer;
   _numberOfQuestionsAsked = 0;
   _scoreBoard.splice(0, _scoreBoard.length)
   _competitionStarted = true;
@@ -83,10 +103,10 @@ function endCompetition() {
   _competitionStarted = false;
 
   UiHelper.cleanModalData();
-  UiHelper.populateScoreBoard(_scoreBoard,_numberOfPlayers,_playerNames);
+  UiHelper.populateScoreBoard(_scoreBoard, _numberOfPlayers, _playerNames);
   document.body.classList.remove('competition-active');
   document.body.classList.add('celebrate');
-  
+
 }
 
 window.onload = () => {

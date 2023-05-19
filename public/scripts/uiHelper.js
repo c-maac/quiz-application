@@ -72,6 +72,7 @@ const UI = {
 
     const playerElements = document.getElementsByClassName('player-name') || [];
     const playerCount = document.getElementById('player-count').value;
+    const timer = document.getElementById('counter').value;
     const playerNames = [];
 
     for (let i = 0; i < playerCount; i += 1) {
@@ -80,7 +81,7 @@ const UI = {
     }
 
     return {
-      playerCount, playerNames
+      playerCount, playerNames, timer
     }
   },
 
