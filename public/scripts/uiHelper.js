@@ -34,7 +34,7 @@ const UI = {
         element.classList.add('selected');
         onSelected(i);
       });
-      choiceContainer.appendChild(element)
+      choiceContainer.appendChild(element);
     }
 
     if (playerName) document.getElementById('current-player').innerHTML = playerName;
@@ -53,14 +53,14 @@ const UI = {
     document.body.classList.remove('setup-competition');
 
     // TODO DUPLICATE CODE - CALL CleanModalData
-    document.getElementById("player-count").disabled = false;
+    document.getElementById('player-count').disabled = false;
     document.getElementById('player-count').value = 2;
     const d = document.getElementsByClassName('player-row');
     while (d.length) d[0].parentElement.removeChild(d[0]);
   },
 
   cleanModalData: () => {
-    document.getElementById("player-count").disabled = false;
+    document.getElementById('player-count').disabled = false;
     document.getElementById('player-count').value = 2;
     const d = document.getElementsByClassName('player-row');
     while (d.length) d[0].parentElement.removeChild(d[0]);
@@ -81,12 +81,11 @@ const UI = {
     }
 
     return {
-      playerCount, playerNames, timer
-    }
+      playerCount, playerNames, timer,
+    };
   },
 
   populateNameFields: () => {
-
     const numberOfPlayers = document.getElementById('player-count').value;
     const table = document.getElementById('modal-table');
     const rowCount = table.rows.length;
@@ -98,7 +97,7 @@ const UI = {
     // if name fields are already populated then return
     if (rowCount > 4) return;
 
-    document.getElementById("player-count").disabled = true;
+    document.getElementById('player-count').disabled = true;
 
     for (let i = numberOfPlayers; i > 0; i -= 1) {
       const row = table.insertRow(rowCount - 1);
@@ -116,12 +115,13 @@ const UI = {
     }
   },
 
-  populateScoreBoard: (_scoreBoard, _numberOfPlayers,_playerNames) => {
-
+  populateScoreBoard: (_scoreBoard, _numberOfPlayers, _playerNames) => {
     const containerDiv = document.getElementById('scoreboard');
 
     for (let i = 0; i < _numberOfPlayers; i += 1) {
-      const result = _scoreBoard.filter((el) => el.player === _playerNames[i] && el.isAnswerCorrect).length
+      const result = _scoreBoard.filter(
+        (el) => el.player === _playerNames[i] && el.isAnswerCorrect,
+      ).length;
 
       const h2Element = document.createElement('h2');
       const h1Element = document.createElement('h1');
@@ -137,11 +137,9 @@ const UI = {
   },
 
   closeScoreBoardModal: () => {
-
     const d = document.getElementsByClassName('score');
     while (d.length) d[0].parentElement.removeChild(d[0]);
 
     document.body.classList.remove('celebrate');
-
-  }
-}
+  },
+};

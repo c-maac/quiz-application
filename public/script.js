@@ -1,3 +1,4 @@
+/* global UI, API */
 const UiHelper = UI;
 const QuestionApi = API;
 
@@ -14,16 +15,15 @@ const _scoreBoard = [];
 /* eslint-enable no-underscore-dangle */
 
 function answerSelected(i) {
-  UiHelper.lockAnswer(_correctIndex)
+  UiHelper.lockAnswer(_correctIndex);
 
   if (_competitionStarted) {
-    console.log(`push object to scoreboard: ${_currentPlayer} ${i == _correctIndex}`);
-    _scoreBoard.push({ player: _currentPlayer, isAnswerCorrect: i == _correctIndex });
+    console.log(`push object to scoreboard: ${_currentPlayer} ${i === _correctIndex}`);
+    _scoreBoard.push({ player: _currentPlayer, isAnswerCorrect: i === _correctIndex });
   }
 }
 
 async function getQuestion() {
-
   document.body.classList.add('loading');
   const data = await QuestionApi.getQuestion();
   document.body.classList.remove('loading');
@@ -43,9 +43,9 @@ async function getQuestion() {
 
     clearInterval(_interval);
 
-     _interval = setInterval(() => {
+    _interval = setInterval(() => {
       timerElement.innerHTML = timer;
-      timer--;
+      timer -= 1;
       if (timer < 0) {
         timerElement.innerHTML = 'TIME OUT';
         document.body.classList.add('loading');
@@ -62,18 +62,18 @@ async function getQuestion() {
 function startCompetition() {
   const modalData = UiHelper.startCompetition();
 
-  _playerNames.splice(0, _playerNames.length, ...modalData.playerNames)
+  _playerNames.splice(0, _playerNames.length, ...modalData.playerNames);
   _numberOfPlayers = modalData.playerCount;
   _timer = modalData.timer;
   _numberOfQuestionsAsked = 0;
-  _scoreBoard.splice(0, _scoreBoard.length)
+  _scoreBoard.splice(0, _scoreBoard.length);
   _competitionStarted = true;
   // to start, display the next question
   getQuestion();
 }
 
 function endCompetition() {
-  let scores = '';
+  // let scores = '';
 
   // Solution 1
   // const finalScores = _scoreBoard.reduce((map, {player, isAnswerCorrect}) => {
@@ -94,19 +94,19 @@ function endCompetition() {
   // })
 
   // Solution 3
-  for (let i = 0; i < _numberOfPlayers; i += 1) {
-    const result = _scoreBoard.filter((el) => el.player === _playerNames[i] && el.isAnswerCorrect).length
-    scores += `${_playerNames[i]} = ${result}\n`;
-  }
+  // for (let i = 0; i < _numberOfPlayers; i += 1) {
+  //   const result = _scoreBoard.filter(
+  //  (el) => el.player === _playerNames[i] && el.isAnswerCorrect).length;
+  //   scores += `${_playerNames[i]} = ${result}\n`;
+  // }
 
-  //alert(scores);
+  // alert(scores);
   _competitionStarted = false;
 
   UiHelper.cleanModalData();
   UiHelper.populateScoreBoard(_scoreBoard, _numberOfPlayers, _playerNames);
   document.body.classList.remove('competition-active');
   document.body.classList.add('celebrate');
-
 }
 
 window.onload = () => {
