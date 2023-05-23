@@ -1,4 +1,5 @@
 /* global UI, API */
+
 const UiHelper = UI;
 const QuestionApi = API;
 
@@ -18,7 +19,7 @@ function answerSelected(i) {
   UiHelper.lockAnswer(_correctIndex);
 
   if (_competitionStarted) {
-    console.log(`push object to scoreboard: ${_currentPlayer} ${i === _correctIndex}`);
+    console.log(`push object to scoreboard: ${_currentPlayer} ${i === _correctIndex}`); // TODO: Remove console log
     _scoreBoard.push({ player: _currentPlayer, isAnswerCorrect: i === _correctIndex });
   }
 }
@@ -43,11 +44,12 @@ async function getQuestion() {
 
     clearInterval(_interval);
 
+    timerElement.innerHTML = timer;
+
     _interval = setInterval(() => {
-      timerElement.innerHTML = timer;
       timer -= 1;
-      if (timer < 0) {
-        timerElement.innerHTML = 'TIME OUT';
+      timerElement.innerHTML = timer;
+      if (timer < 1) {
         document.body.classList.add('loading');
         clearInterval(_interval);
         getQuestion();
@@ -69,10 +71,11 @@ function startCompetition() {
   _scoreBoard.splice(0, _scoreBoard.length);
   _competitionStarted = true;
   // to start, display the next question
-  getQuestion();
+  getQuestion().then();
 }
 
 function endCompetition() {
+  // TODO: They are not working
   // let scores = '';
 
   // Solution 1
@@ -111,5 +114,5 @@ function endCompetition() {
 
 window.onload = () => {
   UiHelper.setupUi(getQuestion, startCompetition, endCompetition);
-  getQuestion();
+  getQuestion().then();
 };
