@@ -11,7 +11,7 @@ const UI = {
     document.getElementById('button-next').addEventListener('click', getQuestion);
     document.getElementById('button-start').addEventListener('click', startCompetition);
     document.getElementById('button-end').addEventListener('click', endCompetition);
-    document.getElementById('button-close-modal').addEventListener('click', UI.closeCompetitionModal);
+    document.getElementById('button-close-modal').addEventListener('click', UI.cleanModalData);
     document.getElementById('button-close-scoreboard').addEventListener('click', UI.closeScoreBoardModal);
   },
 
@@ -49,21 +49,14 @@ const UI = {
     document.body.classList.add('setup-competition');
   },
 
-  closeCompetitionModal: () => {
+  cleanModalData: () => {
     document.body.classList.remove('setup-competition');
 
-    // TODO DUPLICATE CODE - CALL CleanModalData
     document.getElementById('player-count').disabled = false;
     document.getElementById('player-count').value = 2;
-    const d = document.getElementsByClassName('player-row');
-    while (d.length) d[0].parentElement.removeChild(d[0]);
-  },
-
-  cleanModalData: () => {
-    document.getElementById('player-count').disabled = false;
-    document.getElementById('player-count').value = 2;
-    const d = document.getElementsByClassName('player-row');
-    while (d.length) d[0].parentElement.removeChild(d[0]);
+    document.getElementById('counter').value = 15;
+    const rows = document.getElementsByClassName('player-row');
+    while (rows.length) rows[0].parentElement.removeChild(rows[0]);
   },
 
   startCompetition: () => {
@@ -115,20 +108,23 @@ const UI = {
     }
   },
 
-  populateScoreBoard: (_scoreBoard, _numberOfPlayers, _playerNames) => {
+  populateScoreBoard: (_scoreBoard) => {
     const containerDiv = document.getElementById('scoreboard');
+    const finalScores = _scoreBoard.reduce(
+      (val, { player, isAnswerCorrect: correct }) => ({
+        ...val,
+        [player]: (val[player] ?? 0) + correct,
+      }),
+      {},
+    );
 
-    for (let i = 0; i < _numberOfPlayers; i += 1) {
-      const result = _scoreBoard.filter(
-        (el) => el.player === _playerNames[i] && el.isAnswerCorrect,
-      ).length;
-
+    for (const [player, result] of Object.entries(finalScores)) {
       const h2Element = document.createElement('h2');
       const h1Element = document.createElement('h1');
       const div = document.createElement('div');
       div.classList.add('score');
       h2Element.innerText = result;
-      h1Element.innerText = _playerNames[i];
+      h1Element.innerText = player;
 
       div.appendChild(h1Element);
       div.appendChild(h2Element);
