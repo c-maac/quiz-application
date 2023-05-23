@@ -49,6 +49,7 @@ async function getQuestion() {
       timer -= 1;
       timerElement.innerHTML = timer;
       if (timer < 1) {
+        _scoreBoard.push({ player: _currentPlayer, isAnswerCorrect: false });
         document.body.classList.add('loading');
         clearInterval(_interval);
         getQuestion();
