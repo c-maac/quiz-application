@@ -39,10 +39,6 @@
     display: flex;
     z-index: 1;
   }
-  
-  body.celebrate .drop-container {
-    display: flex;
-  }
 
   body.celebrate #container,
   body.celebrate #button-next,
