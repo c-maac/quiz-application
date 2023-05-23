@@ -19,7 +19,6 @@ function answerSelected(i) {
   UiHelper.lockAnswer(_correctIndex);
 
   if (_competitionStarted) {
-    console.log(`push object to scoreboard: ${_currentPlayer} ${i === _correctIndex}`); // TODO: Remove console log
     _scoreBoard.push({ player: _currentPlayer, isAnswerCorrect: i === _correctIndex });
   }
 }
@@ -75,39 +74,10 @@ function startCompetition() {
 }
 
 function endCompetition() {
-  // TODO: They are not working
-  // let scores = '';
-
-  // Solution 1
-  // const finalScores = _scoreBoard.reduce((map, {player, isAnswerCorrect}) => {
-  //   map[player] = (map[player] ?? 0) + isAnswerCorrect;
-  //   return map;
-  // }, {})
-
-  // Solution 2
-  // const finalScores = _scoreBoard.reduce(
-  //   (val, { player, isAnswerCorrect: correct }) => ({
-  //     ...val,
-  //     [player]: (val[player] ?? 0) + correct,
-  //   }),
-  //   {});
-
-  // Object.entries(finalScores).forEach(({ player, isAnswerCorrect }) => {
-  //   scores += `${player}: ${isAnswerCorrect}\n`;
-  // })
-
-  // Solution 3
-  // for (let i = 0; i < _numberOfPlayers; i += 1) {
-  //   const result = _scoreBoard.filter(
-  //  (el) => el.player === _playerNames[i] && el.isAnswerCorrect).length;
-  //   scores += `${_playerNames[i]} = ${result}\n`;
-  // }
-
-  // alert(scores);
   _competitionStarted = false;
 
   UiHelper.cleanModalData();
-  UiHelper.populateScoreBoard(_scoreBoard, _numberOfPlayers, _playerNames);
+  UiHelper.populateScoreBoard(_scoreBoard);
   document.body.classList.remove('competition-active');
   document.body.classList.add('celebrate');
 }
