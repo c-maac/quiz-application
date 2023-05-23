@@ -22,20 +22,20 @@ git clone https://github.com/c-maac/quiz-application.git
 
 cd quiz-application
 ```
-4. Install project dependencies
+3. Install project dependencies
 ```
 npm install
 ```
-5. Once the installation is complete, you can start the application by running the following command
+4. Once the installation is complete, you can start the application by running the following command
 ```
 npm start
 ```
-6. Instead of 'npm start', you can use nodemon for automatic server restarts during development
+5. Instead of 'npm start', you can use nodemon for automatic server restarts during development
 ```
 npm run dev
 ```
 
-7. The application runs on port 3000 by default. If you want to use a different port, you can modify the configuration in the code or specify the desired port when starting the application
+6. The application runs on port 3000 by default. If you want to use a different port, you can modify the configuration in the code or specify the desired port when starting the application
 ```
 npm start --port <desired-port>
 ```
